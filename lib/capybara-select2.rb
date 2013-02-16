@@ -8,8 +8,6 @@ module Capybara
       select_name = options[:from]
 
       select2_container=find("label", text: select_name).find(:xpath, '..').find(".select2-container")
-      PP.pp(select2_container)
-
       select2_container.find(".select2-choice").click
 
       find(".select2-drop li", text: value).click
