@@ -1,4 +1,5 @@
 require "capybara-select2/version"
+require 'rspec/core'
 
 module Capybara
   module Select2
