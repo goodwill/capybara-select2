@@ -8,9 +8,11 @@ module Capybara
       select_name = options[:from]
 
       select2_container=first("label", text: select_name).find(:xpath, '..').find(".select2-container")
-      select2_container.find(".select2-choice").click
 
-      find(:xpath, "//body").find(".select2-drop li", text: value).click
+      [value].flatten.each do |value|
+        select2_container.find(:xpath, "a[contains(concat(' ',normalize-space(@class),' '),' select2-choice ')] | ul[contains(concat(' ',normalize-space(@class),' '),' select2-choices ')]").click
+        find(:xpath, "//body").find(".select2-drop li", text: value).click
+      end
     end
   end
 end
