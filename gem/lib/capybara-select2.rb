@@ -13,7 +13,12 @@ module Capybara
         select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
       end
 
-      select2_container.find(".select2-choice").click
+      # Open select2 field
+      if select2_container.has_selector?(".select2-choice")
+        select2_container.find(".select2-choice").click
+      else
+        select2_container.find(".select2-choices").click
+      end
 
       if options.has_key? :search
         find(:xpath, "//body").find("input.select2-input").set(value)
