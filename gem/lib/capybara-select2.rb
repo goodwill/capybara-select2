@@ -16,7 +16,10 @@ module Capybara
           "./ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' select2-container ')]")
       end
 
-      select2_container.find(".select2-choice").click
+      single = select2_container.first('.select2-choice')
+      multiple = select2_container.first('.select2-choices')
+
+      single.click if single
 
       if options.has_key? :search
         find(:xpath, "//body").find("input.select2-input").set(value)
@@ -26,8 +29,8 @@ module Capybara
         drop_container = ".select2-drop"
       end
 
-      [value].flatten.each do |value|
-        select2_container.find(:xpath, "a[contains(concat(' ',normalize-space(@class),' '),' select2-choice ')] | ul[contains(concat(' ',normalize-space(@class),' '),' select2-choices ')]").click
+      [value].flatten.each_with_index do |value, index|
+        multiple.click if multiple# unless index == 0
         find(:xpath, "//body").find("#{drop_container} li", text: value).click
       end
     end
