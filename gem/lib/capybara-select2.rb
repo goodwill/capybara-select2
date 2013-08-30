@@ -23,9 +23,7 @@ module Capybara
         drop_container = ".select2-drop"
       end
 
-      [value].flatten.each do |value|
-        find(:css, drop_container).find(:css, ".select2-match", text: value).click
-      end
+      find(:css, drop_container).find(:css, ".select2-match").click
     end
   end
 end
