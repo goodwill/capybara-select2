@@ -24,8 +24,7 @@ module Capybara
       end
 
       [value].flatten.each do |value|
-        select2_container.find(:xpath, "a[contains(concat(' ',normalize-space(@class),' '),' select2-choice ')] | ul[contains(concat(' ',normalize-space(@class),' '),' select2-choices ')]").click
-        find(:xpath, "//body").find("#{drop_container} li", text: value).click
+        find(:css, drop_container).find(:css, ".select2-match", text: value).click
       end
     end
   end
