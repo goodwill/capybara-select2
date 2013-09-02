@@ -23,7 +23,7 @@ module Capybara
         drop_container = ".select2-drop"
       end
 
-      find(:css, drop_container).find(:css, ".select2-match").click
+      find(:css, drop_container).find(:css, ".select2-result-label").click
     end
   end
 end
