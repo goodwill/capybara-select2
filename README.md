@@ -31,8 +31,12 @@ Just use this method inside your capybara test:
 
     select2("Dropdown Text", from: "Label of the dropdown")
 
-If the select2 field has a `min_length` option (acts as a search field) specify it with :
-    
+or
+
+    select2("Dropdown Text", xpath: "<xpath of the dropdown>")
+
+If the select2 field has a `min_length` option (acts as a search field) specify it with:
+
     select2("foo", from: "Label of the dropdown", search: true)
 
 ## Contributing
