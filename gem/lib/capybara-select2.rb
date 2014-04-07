@@ -1,4 +1,5 @@
 require "capybara-select2/version"
+require 'capybara/selectors/tag_selector'
 require 'rspec/core'
 
 module Capybara
@@ -30,6 +31,7 @@ module Capybara
   end
 end
 
-RSpec.configure do |c|
-  c.include Capybara::Select2
+RSpec.configure do |config|
+  config.include Capybara::Select2
+  config.include Capybara::Selectors::TagSelector
 end
