@@ -13,7 +13,7 @@ Or, add it into your test group
     group :test do
       gem 'capybara-select2'
       ...
-    end	
+    end
 
 And then execute:
 
@@ -38,6 +38,12 @@ or
 If the select2 field has a `min_length` option (acts as a search field) specify it with:
 
     select2("foo", from: "Label of the dropdown", search: true)
+
+If select2 field has [tags](http://ivaynberg.github.io/select2/#tags) option you can use:
+
+```ruby
+select2_tag('value', from: 'Label of input')
+```
 
 ## Contributing
 
