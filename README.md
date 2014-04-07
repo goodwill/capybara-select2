@@ -1,5 +1,7 @@
 # Capybara::Select2
 
+[![Code Climate](https://codeclimate.com/github/goodwill/capybara-select2.png)](https://codeclimate.com/github/goodwill/capybara-select2)
+
 All this gem does is something very simple- allow you to trigger select2 dropdown to select the value you want. The original select doesn't with the javascript overrides, so this new helper method does only this thing.
 
 ## Installation
