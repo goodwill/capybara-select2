@@ -19,7 +19,7 @@ module Capybara
       select2_container.find(".select2-choice").click
 
       if options.has_key? :search
-        find(:xpath, "//body").find("input.select2-input").set(value)
+        find(:xpath, "//body").find(".select2-with-searchbox input.select2-input").set(value)
         page.execute_script(%|$("input.select2-input:visible").keyup();|)
         drop_container = ".select2-results"
       else
