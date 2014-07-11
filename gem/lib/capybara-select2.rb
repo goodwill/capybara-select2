@@ -27,7 +27,7 @@ module Capybara
       end
 
       [value].flatten.each do |value|
-        find(:xpath, "//body").find("#{drop_container} li", text: value).click
+        find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
       end
     end
   end
