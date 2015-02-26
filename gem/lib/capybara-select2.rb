@@ -13,7 +13,9 @@ module Capybara
         select2_container = first(:css, options[:css])
       else
         select_name = options[:from]
-        select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
+        label = first("label", text: select_name)
+        label_parent = label.find(:xpath, '..')
+        select2_container = label_parent.find(".select2-container")
       end
 
       # Open select2 field
@@ -23,16 +25,20 @@ module Capybara
         select2_container.find(".select2-choices").click
       end
 
+      body = find(:xpath, "//body")
+
       if options.has_key? :search
-        find(:xpath, "//body").find(".select2-with-searchbox input.select2-input").set(value)
+        searchbox = body.find(".select2-with-searchbox")
+        searchbox_input = searchbox.find("input.select2-input").set(value)
         page.execute_script(%|$("input.select2-input:visible").keyup();|)
         drop_container = ".select2-results"
       else
         drop_container = ".select2-drop"
       end
 
+      drop_container_element = body.find("#{drop_container}")
       [value].flatten.each do |value|
-        find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
+        drop_container_element.find("li.select2-result-selectable", text: value).click
       end
     end
   end
