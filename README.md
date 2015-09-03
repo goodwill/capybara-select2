@@ -27,6 +27,12 @@ Or install it yourself as:
 
 The gem automatically hook itself into rspec helper using Rspec.configure.
 
+If you're using capybara outside of Rspec, you may have to include the following (eg: in `features/support/env.rb` for Cucumber users):
+
+``` ruby
+include Capybara::Select2
+```
+
 ## Usage
 
 Just use this method inside your capybara test:
