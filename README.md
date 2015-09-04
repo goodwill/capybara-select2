@@ -8,38 +8,58 @@ All this gem does is something very simple- allow you to trigger select2 dropdow
 
 Add this line to your application's Gemfile:
 
-    gem 'capybara-select2', group: :test
+``` ruby
+gem 'capybara-select2', group: :test
+```
 
 Or, add it into your test group
 
-    group :test do
-      gem 'capybara-select2'
-      ...
-    end
+``` ruby
+group :test do
+  gem 'capybara-select2'
+  ...
+end
+```
 
 And then execute:
 
-    $ bundle
+``` bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install capybara-select2
+``` bash
+$ gem install capybara-select2
+```
 
 The gem automatically hook itself into rspec helper using Rspec.configure.
+
+If you're using capybara outside of Rspec, you may have to include the following (eg: in `features/support/env.rb` for Cucumber users):
+
+``` ruby
+include Capybara::Select2
+```
 
 ## Usage
 
 Just use this method inside your capybara test:
 
-    select2("Dropdown Text", from: "Label of the dropdown")
+``` ruby
+select2("Dropdown Text", from: "Label of the dropdown")
+```
 
 or
 
-    select2("Dropdown Text", xpath: "<xpath of the dropdown>")
+``` ruby
+select2("Dropdown Text", xpath: "<xpath of the dropdown>")
+```
 
 If the select2 field has a `min_length` option (acts as a search field) specify it with:
 
-    select2("foo", from: "Label of the dropdown", search: true)
+``` ruby
+select2("foo", from: "Label of the dropdown", search: true)
+```
 
 If select2 field has [tags](http://ivaynberg.github.io/select2/#tags) option you can use:
 
