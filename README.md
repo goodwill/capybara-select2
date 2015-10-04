@@ -67,6 +67,12 @@ If select2 field has [tags](http://ivaynberg.github.io/select2/#tags) option you
 select2_tag('value', from: 'Label of input')
 ```
 
+To deselect tag just do the following:
+
+```ruby
+select2_deselect_tag('value', from: 'Label of input')
+```
+
 ## Contributing
 
 1. Fork it
