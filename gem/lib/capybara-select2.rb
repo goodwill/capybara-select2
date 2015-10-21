@@ -29,23 +29,44 @@ module Capybara
       if options.has_key? :search
         find(:xpath, "//body").find(".select2-search input.select2-search__field").set(value)
         page.execute_script(%|$("input.select2-search__field:visible").keyup();|)
-        drop_container = ".select2-results"
+        @drop_container = ".select2-results"
       elsif find(:xpath, "//body").has_selector?(".select2-dropdown")
         # select2 version 4.0
-        drop_container = ".select2-dropdown"
+        @drop_container = ".select2-dropdown"
       else
-        drop_container = ".select2-drop"
+        @drop_container = ".select2-drop"
       end
 
       [value].flatten.each do |value|
-        if find(:xpath, "//body").has_selector?("#{drop_container} li.select2-results__option")
-          # select2 version 4.0
-          find(:xpath, "//body").find("#{drop_container} li.select2-results__option", text: value).click
-        else
-          find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
-        end
+        select_option(value)
       end
     end
+
+    private
+
+    def select_option(value)
+      wait_for_option_with_text(value)
+      find(:xpath, "//body").find(select2_option_selector, text: value).click
+    end
+
+    def select2_option_selector
+      if find(:xpath, "//body").has_selector?("#{@drop_container} li.select2-results__option")
+        "#{@drop_container} li.select2-results__option"
+      else
+        "#{@drop_container} li.select2-result-selectable"
+      end
+    end
+
+    def wait_for_option_with_text(value)
+      begin
+        Timeout.timeout(2) do
+          sleep(0.1) until page.has_selector?(select2_option_selector, text: value)
+        end
+      rescue TimeoutError
+        find(:xpath, "//body").find(select2_option_selector, text: value).click
+      end
+    end
+
   end
 end
 
