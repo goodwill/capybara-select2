@@ -52,7 +52,6 @@ module Capybara
     end
 
     def select2_option_selector
-      p find(:xpath, "//body").has_selector?("#{@drop_container} li.select2-results__option").inspect
       if find(:xpath, "//body").has_selector?("#{@drop_container} li.select2-results__option")
         "#{@drop_container} li.select2-results__option"
       else
