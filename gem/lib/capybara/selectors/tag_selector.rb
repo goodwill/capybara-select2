@@ -2,12 +2,13 @@ module Capybara
   module Selectors
     module TagSelector
       def select2_tag(value, options = {})
-        if options[:from]
-          find(:fillable_field, options[:from]).set(value)
+        select2_container = if options.has_key? :css
+          find(:css, options[:css])
         else
-          find('input.select2-input').set(value)
+          select_name = options[:from]
+          find("label", text: select_name).find(:xpath, '..').find(".select2-container")
         end
-
+        
         find('.select2-drop li', text: value).click
       end
     end
