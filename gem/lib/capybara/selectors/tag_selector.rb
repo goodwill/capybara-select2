@@ -14,13 +14,13 @@ module Capybara
 
         @drop_container = ".select2-dropdown"
 
-        select_option(value)
+        select_option(value, options[:first])
       end
 
       private
 
-        def select_option(value)
-          clicked = wait_for_option_with_text(value)
+        def select_option(value, first)
+          clicked = wait_for_option_with_text(value, first)
           unless clicked
             find(:xpath, "//body").find(select2_option_selector, text: value).click
           end
@@ -30,14 +30,18 @@ module Capybara
           "#{@drop_container} li.select2-results__option"
         end
 
-        def wait_for_option_with_text(value)
+        def wait_for_option_with_text(value, first)
           clicked = false
           begin
             Timeout.timeout(2) do
               sleep(0.1) unless page.has_selector?(select2_option_selector, text: value)
             end
           rescue TimeoutError
-            find(:xpath, "//body").find(select2_option_selector, text: value).click
+            if first
+              find(:xpath, "//body").first(select2_option_selector, text: value).click
+            else
+              find(:xpath, "//body").find(select2_option_selector, text: value).click
+            end
             clicked = true
           end
           clicked
