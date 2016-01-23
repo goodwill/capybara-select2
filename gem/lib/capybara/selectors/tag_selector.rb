@@ -22,7 +22,11 @@ module Capybara
         def select_option(value, first)
           clicked = wait_for_option_with_text(value, first)
           unless clicked
-            find(:xpath, "//body").find(select2_option_selector, text: value).click
+            if first
+              find(:xpath, "//body").first(select2_option_selector, text: value).click
+            else
+              find(:xpath, "//body").find(select2_option_selector, text: value).click
+            end
           end
         end
 
