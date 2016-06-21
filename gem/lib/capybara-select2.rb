@@ -1,6 +1,5 @@
 require "capybara-select2/version"
 require 'capybara/selectors/tag_selector'
-require 'rspec/core'
 
 module Capybara
   module Select2
@@ -49,7 +48,12 @@ module Capybara
   end
 end
 
-RSpec.configure do |config|
-  config.include Capybara::Select2
-  config.include Capybara::Selectors::TagSelector
+begin
+  require 'rspec/core'
+
+  RSpec.configure do |config|
+    config.include Capybara::Select2
+    config.include Capybara::Selectors::TagSelector
+  end
+rescue LoadError
 end
