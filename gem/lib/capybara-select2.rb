@@ -32,6 +32,8 @@ module Capybara
         @drop_container = ".select2-results"
       elsif find(:xpath, "//body").has_selector?(".select2-dropdown")
         # select2 version 4.0
+        find(:xpath, "//body").find(".select2-search.select2-search--dropdown input.select2-search__field").set(value)
+        page.execute_script(%|$(".select2-search.select2-search--dropdown input.select2-search__field:visible").keyup();|)
         @drop_container = ".select2-dropdown"
       else
         @drop_container = ".select2-drop"
