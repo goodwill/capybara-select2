@@ -7,6 +7,8 @@ module Capybara
     def select2(value, options = {})
       raise "Must pass a hash containing 'from' or 'xpath' or 'css'" unless options.is_a?(Hash) and [:from, :xpath, :css].any? { |k| options.has_key? k }
 
+      @options = options
+
       if options.has_key? :xpath
         select2_container = find(:xpath, options[:xpath])
       elsif options.has_key? :css
@@ -33,7 +35,6 @@ module Capybara
       elsif find(:xpath, "//body").has_selector?(".select2-dropdown")
         # select2 version 4.0
         find(:xpath, "//body").find(".select2-search.select2-search--dropdown input.select2-search__field").set(value)
-        page.execute_script(%|$(".select2-search.select2-search--dropdown input.select2-search__field:visible").keyup();|)
         @drop_container = ".select2-dropdown"
       else
         @drop_container = ".select2-drop"
@@ -49,7 +50,7 @@ module Capybara
     def select_option(value)
       clicked = wait_for_option_with_text(value)
       unless clicked
-        find(:xpath, "//body").find(select2_option_selector, text: value).click
+        click_on_option(value)
       end
     end
 
@@ -65,13 +66,25 @@ module Capybara
       clicked = false
       begin
         Timeout.timeout(2) do
-          sleep(0.1) unless page.has_selector?(select2_option_selector, text: value)
+          if page.has_selector?(select2_option_selector, text: value)
+            click_on_option(value)
+            clicked = true
+            break
+          else
+            sleep(0.1)
+          end
         end
       rescue TimeoutError
-        find(:xpath, "//body").find(select2_option_selector, text: value).click
-        clicked = true
       end
       clicked
+    end
+
+    def click_on_option(value)
+      if @options[:first] == true
+        find(:xpath, "//body").first(select2_option_selector, text: value).click
+      else
+        find(:xpath, "//body").find(select2_option_selector, text: value).click
+      end
     end
 
   end
