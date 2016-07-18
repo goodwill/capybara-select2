@@ -34,7 +34,9 @@ module Capybara
         @drop_container = ".select2-results"
       elsif find(:xpath, "//body").has_selector?(".select2-dropdown")
         # select2 version 4.0
-        find(:xpath, "//body").find(".select2-search.select2-search--dropdown input.select2-search__field").set(value)
+        unless @options[:without_searching]
+          find(:xpath, "//body").find(".select2-search.select2-search--dropdown input.select2-search__field").set(value)
+        end
         @drop_container = ".select2-dropdown"
       else
         @drop_container = ".select2-drop"
@@ -47,45 +49,45 @@ module Capybara
 
     private
 
-    def select_option(value)
-      clicked = wait_for_option_with_text(value)
-      unless clicked
-        click_on_option(value)
-      end
-    end
-
-    def select2_option_selector
-      if find(:xpath, "//body").has_selector?("#{@drop_container} li.select2-results__option")
-        "#{@drop_container} li.select2-results__option"
-      else
-        "#{@drop_container} li.select2-result-selectable"
-      end
-    end
-
-    def wait_for_option_with_text(value)
-      clicked = false
-      begin
-        Timeout.timeout(2) do
-          if page.has_selector?(select2_option_selector, text: value)
-            click_on_option(value)
-            clicked = true
-            break
-          else
-            sleep(0.1)
-          end
+      def select_option(value)
+        clicked = wait_for_option_with_text(value)
+        unless clicked
+          click_on_option(value)
         end
-      rescue TimeoutError
       end
-      clicked
-    end
 
-    def click_on_option(value)
-      if @options[:first] == true
-        find(:xpath, "//body").first(select2_option_selector, text: value).click
-      else
-        find(:xpath, "//body").find(select2_option_selector, text: value).click
+      def select2_option_selector
+        if find(:xpath, "//body").has_selector?("#{@drop_container} li.select2-results__option")
+          "#{@drop_container} li.select2-results__option"
+        else
+          "#{@drop_container} li.select2-result-selectable"
+        end
       end
-    end
+
+      def wait_for_option_with_text(value)
+        clicked = false
+        begin
+          Timeout.timeout(2) do
+            if page.has_selector?(select2_option_selector, text: value)
+              click_on_option(value)
+              clicked = true
+              break
+            else
+              sleep(0.1)
+            end
+          end
+        rescue TimeoutError
+        end
+        clicked
+      end
+
+      def click_on_option(value)
+        if @options[:first] == true
+          find(:xpath, "//body").first(select2_option_selector, text: value).click
+        else
+          find(:xpath, "//body").find(select2_option_selector, text: value).click
+        end
+      end
 
   end
 end
