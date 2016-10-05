@@ -24,8 +24,11 @@ module Capybara
       select2_container.find(opener).click
 
       if options.has_key? :search
-        find(:xpath, "//body").find(".select2-search input.select2-search__field").set(value)
-        page.execute_script(%|$("input.select2-search__field:visible").keyup();|)
+        search_field = '.select2-search input.select2-search__field,' + # select2 version 4.0
+                       '.select2-with-searchbox input.select2-input'
+
+        find(:xpath, "//body").find(search_field).set(value)
+        page.execute_script("$('#{search_field}').keyup();")
       end
 
       option = '.select2-results li.select2-results__option,' + # select2 version 4.0
