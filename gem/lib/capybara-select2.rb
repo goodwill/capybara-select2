@@ -20,7 +20,7 @@ module Capybara
 
       opener = '.select2-selection,' + # select2 version 4.0
                '.select2-choice,'    + # single select box
-               '.select2-choices'      # multiple
+               '.select2-search-field' # multiple
       select2_container.find(opener).click
 
       if options.has_key? :search
