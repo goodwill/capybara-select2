@@ -25,14 +25,15 @@ module Capybara
 
       if options.has_key? :search
         search_field = '.select2-search input.select2-search__field,' + # select2 version 4.0
-                       '.select2-with-searchbox input.select2-input'
+                       '.select2-with-searchbox input.select2-input,' +
+                       '.select2-search-field input.select2-input' # input field for version 3.5.*
 
         find(:xpath, "//body").find(search_field).set(value)
         page.execute_script("$('#{search_field}').keyup();")
       end
 
       option = '.select2-results li.select2-results__option,' + # select2 version 4.0
-               '.select2-results li.select2-result-selectable'  # single and multiple select boxes
+               '.select2-results li.select2-result-selectable' + # single and multiple select boxes
 
       [value].flatten.each do |value|
           find(:xpath, "//body").find(option, text: value).click
