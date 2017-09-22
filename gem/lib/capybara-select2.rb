@@ -33,7 +33,7 @@ module Capybara
       end
 
       option = '.select2-results li.select2-results__option,' + # select2 version 4.0
-               '.select2-results li.select2-result-selectable' + # single and multiple select boxes
+               '.select2-results li.select2-result-selectable'  # single and multiple select boxes
 
       [value].flatten.each do |value|
           find(:xpath, "//body").find(option, text: value).click
