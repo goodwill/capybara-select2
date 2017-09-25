@@ -28,7 +28,16 @@ module Capybara
                        '.select2-with-searchbox input.select2-input,' +
                        '.select2-search-field input.select2-input' # input field for version 3.5.*
 
-        find(:xpath, "//body").find(search_field).set(value)
+        search_field_container = if(
+          select2_container[:class].include?('select2-container-multi') || # Select2 version 3.5.*
+          select2_container.has_css?('.select2-selection--multiple'))      # version 4.0
+          
+          select2_container
+        else
+          page.find('.select2-drop,' +    # select2 version 3.5.*
+                    '.select2-dropdown') # select2 version 4.0
+        end
+	search_field_container.find(search_field).set value
         page.execute_script("$('#{search_field}').keyup();")
       end
 
