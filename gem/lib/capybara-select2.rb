@@ -17,33 +17,35 @@ module Capybara
       end
 
       # Open select2 field
-      if select2_container.has_selector?(".select2-selection")
-        # select2 version 4.0
-        select2_container.find(".select2-selection").click
-      elsif select2_container.has_selector?(".select2-choice")
-        select2_container.find(".select2-choice").click
-      else
-        select2_container.find(".select2-choices").click
-      end
+
+      opener = '.select2-selection,' + # select2 version 4.0
+               '.select2-choice,'    + # single select box
+               '.select2-search-field' # multiple
+      select2_container.find(opener).click
 
       if options.has_key? :search
-        find(:xpath, "//body").find(".select2-search input.select2-search__field").set(value)
-        page.execute_script(%|$("input.select2-search__field:visible").keyup();|)
-        drop_container = ".select2-results"
-      elsif find(:xpath, "//body").has_selector?(".select2-dropdown")
-        # select2 version 4.0
-        drop_container = ".select2-dropdown"
-      else
-        drop_container = ".select2-drop"
+        search_field = '.select2-search input.select2-search__field,' + # select2 version 4.0
+                       '.select2-with-searchbox input.select2-input,' +
+                       '.select2-search-field input.select2-input' # input field for version 3.5.*
+
+        search_field_container = if(
+          select2_container[:class].include?('select2-container-multi') || # Select2 version 3.5.*
+          select2_container.has_css?('.select2-selection--multiple'))      # version 4.0
+          
+          select2_container
+        else
+          page.find('.select2-drop,' +    # select2 version 3.5.*
+                    '.select2-dropdown') # select2 version 4.0
+        end
+	search_field_container.find(search_field).set value
+        page.execute_script("$('#{search_field}').keyup();")
       end
 
+      option = '.select2-results li.select2-results__option,' + # select2 version 4.0
+               '.select2-results li.select2-result-selectable'  # single and multiple select boxes
+
       [value].flatten.each do |value|
-        if find(:xpath, "//body").has_selector?("#{drop_container} li.select2-results__option")
-          # select2 version 4.0
-          find(:xpath, "//body").find("#{drop_container} li.select2-results__option", text: value).click
-        else
-          find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
-        end
+          find(:xpath, "//body").find(option, text: value).click
       end
     end
   end
