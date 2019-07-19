@@ -8,12 +8,12 @@ module Capybara
       raise "Must pass a hash containing 'from' or 'xpath' or 'css'" unless options.is_a?(Hash) and [:from, :xpath, :css].any? { |k| options.has_key? k }
 
       if options.has_key? :xpath
-        select2_container = find(:xpath, options[:xpath])
+        select2_container = first(:xpath, options[:xpath])
       elsif options.has_key? :css
-        select2_container = find(:css, options[:css])
+        select2_container = first(:css, options[:css])
       else
         select_name = options[:from]
-        select2_container = find("label", text: select_name).find(:xpath, '..').find(".select2-container")
+        select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
       end
 
       # Open select2 field
